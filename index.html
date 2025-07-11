@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viral Video's App</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* same styles as your existing file — I left untouched for you */
+body { font-family: 'Inter', sans-serif; margin: 0; background: #f8fafc; color: #1f2937; }
+header { background: #1e90ff; color: white; padding: 1rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+header .left span { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+header .right img { width: 32px; height: 32px; }
+section { padding: 1rem; }
+.section-title { font-size: 1.3rem; font-weight: 600; color: #1e293b; margin-bottom: 0.75rem; padding-left: 0.25rem; border-left: 4px solid #1e90ff; background: #e7f3ff; display: inline-block; border-radius: 4px; padding: 0.25rem 0.75rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; }
+.poster { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s; aspect-ratio: 736/861; }
+.poster:hover { transform: scale(1.05); }
+.poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+</style>
+</head>
+<body><header>
+  <div class="left">
+    <span><i class="fas fa-video"></i> Viral Video's</span>
+  </div>
+  <div class="right">
+    <a href="https://t.me/yourtelegramchannel" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+    </a>
+    <a href="admin.html" style="
+       margin-left: 10px; 
+       background: #28a745; 
+       color: #fff; 
+       padding: 6px 12px; 
+       border-radius: 4px; 
+       text-decoration: none; 
+       font-size: 0.9rem;">🛠 Admin Panel</a>
+  </div>
+</header>
+
+
+<section>
+  <div class="section-title">All Videos</div>
+  <div class="grid" id="postersGrid"></div>
+</section>
+
+<script>
+const postersGrid = document.getElementById('postersGrid');
+
+function loadVideos() {
+  postersGrid.innerHTML = '';
+  const videos = JSON.parse(localStorage.getItem('videos') || '[]');
+  if (!videos.length) {
+    postersGrid.innerHTML = '<p>No videos found. Please add from admin panel.</p>';
+    return;
+  }
+
+  videos.forEach((v,i) => {
+    const div = document.createElement('div');
+    div.className = 'poster';
+    div.onclick = () => {
+      if(confirm("Open video?")) window.open(v.download, '_blank');
+    };
+    const img = document.createElement('img');
+    img.src = v.poster;
+    img.alt = `Video ${i+1}`;
+    div.appendChild(img);
+    postersGrid.appendChild(div);
+  });
+}
+
+loadVideos();
+</script>
+
+</body>
+</html>
